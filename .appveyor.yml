@@ -83,7 +83,7 @@ test_script:
   # Check Python version just in case
   - python --version
   # Run unit tests
-  - nosetests skimage
+  # nosetests skimage
   - cd ..
 
 artifacts:
