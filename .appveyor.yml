@@ -2,7 +2,7 @@
 # Windows
 
 environment:
-  BUILD_COMMIT: master
+  BUILD_COMMIT: v0.13.1
   REPO_DIR: scikit-image
   PKG_NAME: scikit_image
   WHEELHOUSE_UPLOADER_USERNAME: travis-worker
@@ -61,8 +61,7 @@ install:
 
   # Install the build dependencies of the project.
   - pip install %NP_TEST_DEP%
-  - pip install -r requirements\default.txt
-  - pip install -r requirements\build.txt
+  - pip install Cython six scipy
   - python setup.py bdist_wheel
   - cd ..
 
@@ -72,7 +71,8 @@ build: false
 test_script:
   # Install the test / runtime dependencies
   - pip install %NP_TEST_DEP%
-  - pip install -r %REPO_DIR%\requirements\test.txt
+  - pip install -r %REPO_DIR%\requirements.txt
+  - pip install nose
   # Install the generated wheel package to test it
   - pip install --pre --no-index --find-links .\%REPO_DIR%\dist %PKG_NAME%
   # Change into an innocuous directory and find tests from installation
@@ -82,8 +82,8 @@ test_script:
   - echo backend:Agg > matplotlibrc
   # Check Python version just in case
   - python --version
-  # Run unit tests with pytest
-  - pytest --pyargs skimage
+  # Run unit tests
+  - nosetests skimage
   - cd ..
 
 artifacts:
